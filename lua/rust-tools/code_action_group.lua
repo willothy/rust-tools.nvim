@@ -146,7 +146,16 @@ local function on_code_action_results(results, ctx)
     height = vim.tbl_count(M.state.actions.grouped)
       + vim.tbl_count(M.state.actions.ungrouped),
     focusable = true,
-    border = "rounded",
+    border = {
+      { "▀", "NoiceCmdlinePopupBorder" }, -- top left
+      { "▀", "NoiceCmdlinePopupBorder" }, -- top
+      { "▀", "NoiceCmdlinePopupBorder" }, -- top right
+      { " ", "NoiceCmdlinePopupBorder" }, -- right
+      { "▄", "NoiceCmdlinePopupBorder" }, -- bottom right
+      { "▄", "NoiceCmdlinePopupBorder" }, -- bottom
+      { "▄", "NoiceCmdlinePopupBorder" }, -- bottom left
+      { " ", "NoiceCmdlinePopupBorder" }, -- left
+    },
     row = 1,
     col = 0,
   })
