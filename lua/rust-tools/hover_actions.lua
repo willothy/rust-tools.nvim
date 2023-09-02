@@ -26,7 +26,11 @@ local function run_command(ctx)
   local action = M._state.commands[line]
 
   close_hover()
-  M.execute_rust_analyzer_command(action, ctx)
+  if action.action then
+    action.action()
+  elseif action.command then
+    M.execute_rust_analyzer_command(action, ctx)
+  end
 end
 
 function M.execute_rust_analyzer_command(action, ctx)
@@ -67,6 +71,14 @@ function M.handler(_, result, ctx)
     util.convert_input_to_markdown_lines(result.contents, {})
   if result.actions then
     M._state.commands = result.actions[1].commands
+  else
+    M._state.commands = {
+      { title = "Find references", action = vim.lsp.buf.references },
+      { title = "Go to definition", action = vim.lsp.buf.definition },
+    }
+  end
+
+  if #M._state.commands > 0 then
     local prompt = parse_commands()
     local l = {}
 
@@ -117,14 +129,6 @@ function M.handler(_, result, ctx)
       M._state.winnr = nil
     end,
   })
-
-  --- stop here if there are no possible actions
-  if result.actions == nil then
-    return
-  end
-
-  -- makes more sense in a dropdown-ish ui
-  vim.api.nvim_win_set_option(winnr, "cursorline", true)
 
   -- run the command under the cursor
   vim.keymap.set("n", "<CR>", function()

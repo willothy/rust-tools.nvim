@@ -295,7 +295,16 @@ function M.on_cursor_move()
           width = M.state.secondary.geometry.width,
           height = #value.actions,
           focusable = true,
-          border = "rounded",
+          border = {
+            { "▀", "NoiceCmdlinePopupBorder" }, -- top left
+            { "▀", "NoiceCmdlinePopupBorder" }, -- top
+            { "▀", "NoiceCmdlinePopupBorder" }, -- top right
+            { " ", "NoiceCmdlinePopupBorder" }, -- right
+            { "▄", "NoiceCmdlinePopupBorder" }, -- bottom right
+            { "▄", "NoiceCmdlinePopupBorder" }, -- bottom
+            { "▄", "NoiceCmdlinePopupBorder" }, -- bottom left
+            { " ", "NoiceCmdlinePopupBorder" }, -- left
+          },
           row = line - 2,
           col = M.state.primary.geometry.width + 1,
         })
